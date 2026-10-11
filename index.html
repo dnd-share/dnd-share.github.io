@@ -90,17 +90,58 @@
       color: var(--ink);
       margin: 2rem 0 .75rem;
     }
-    .scroll { max-width: 645px; margin: 1.5rem auto; }
-    .scroll img { display: block; width: 100%; height: auto; }
+    .scroll { max-width: 645px; margin: 1.5rem auto 0; --roll: 0px; container-type: inline-size; }
+    .roll { position: relative; }
+    .roll img { display: block; width: 100%; height: auto; }
+    /* A moving copy of the roll's texture, masked to the roll body, shaded like a cylinder */
+    .roll-turn {
+      position: absolute;
+      background-repeat: no-repeat, repeat-y;
+      background-size: 100% 100%, 100% auto;
+      background-position: 0 0, 0 var(--roll);
+      background-blend-mode: multiply;
+      -webkit-mask-size: 100% 100%;
+      mask-size: 100% 100%;
+    }
+    .roll-turn-top {
+      left: 15.5%; top: 21.52%; width: 61.4%; height: 73.42%;
+      background-image: url("images/roll-top-shade.png"), url("images/roll-top-tex.png");
+      -webkit-mask-image: url("images/roll-top-mask.png");
+      mask-image: url("images/roll-top-mask.png");
+    }
+    .roll-turn-bottom {
+      left: 17.36%; top: 0%; width: 65.74%; height: 69.66%;
+      background-image: url("images/roll-bot-shade.png"), url("images/roll-bot-tex.png");
+      -webkit-mask-image: url("images/roll-bot-mask.png");
+      mask-image: url("images/roll-bot-mask.png");
+    }
+    .scroll-window { position: relative; margin: -1px 0; }
     .scroll-body {
-      margin: -1px 0;
-      padding: .25rem 27% .75rem 22%;
+      height: clamp(260px, 55vh, 460px);
+      overflow-y: auto;
+      scrollbar-width: none;
+      padding: 10cqw 27% 4cqw 22%;
       background: url("images/scroll-mid.png") top center / 100% auto repeat-y;
+      background-attachment: local; /* parchment scrolls with the text */
       color: #3a2616;
       font-size: 1.1rem;
       line-height: 1.55;
+      outline: none;
     }
+    .scroll-body::-webkit-scrollbar { display: none; }
     .scroll-body p:last-child { margin-bottom: 0; }
+    /* Shadow cast by the rolls; masked to the parchment, so it moves with the paper's edges */
+    .scroll-shade {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(to bottom, rgba(30,18,8,.72) 0, rgba(30,18,8,.68) 2.5cqw, rgba(30,18,8,.62) 3.4cqw,
+          rgba(30,18,8,.42) 4.3cqw, rgba(30,18,8,.24) 5.3cqw, rgba(30,18,8,.12) 6.2cqw, rgba(30,18,8,.05) 7.1cqw, rgba(30,18,8,0) 9cqw),
+        linear-gradient(to top, rgba(30,18,8,.3) 0, rgba(30,18,8,.12) 1.5cqw, rgba(30,18,8,0) 3.5cqw);
+      -webkit-mask: url("images/scroll-mid.png") 0 var(--roll) / 100% auto repeat-y;
+      mask: url("images/scroll-mid.png") 0 var(--roll) / 100% auto repeat-y;
+    }
     .scroll-title {
       font-family: "Cinzel", serif;
       font-weight: 700;
@@ -108,6 +149,13 @@
       text-align: center;
       letter-spacing: .08em;
       color: var(--accent);
+    }
+    .scroll-hint {
+      text-align: center;
+      font-style: italic;
+      font-size: .95rem;
+      color: var(--muted);
+      margin: .5rem 0 0;
     }
     @media (max-width: 520px) {
       .scroll-body { font-size: .9rem; line-height: 1.45; }
@@ -245,17 +293,27 @@
       </p>
 
       <h3>2. The Contract</h3>
-      <!-- The scroll grows with its text: top roll + repeating parchment + bottom roll -->
+      <!-- Scrollable scroll: parchment moves with the text and the rolls turn as you scroll -->
       <div class="scroll">
-        <img src="images/scroll-top.png" alt="" aria-hidden="true">
-        <div class="scroll-body">
-          <p class="scroll-title">Contract</p>
-          <p>
-            EDIT: The contract wording goes here. The scroll stretches to fit however much text you add.
-          </p>
+        <div class="roll">
+          <img src="images/scroll-top.png" alt="" aria-hidden="true">
+          <div class="roll-turn roll-turn-top" aria-hidden="true"></div>
         </div>
-        <img src="images/scroll-bottom.png" alt="" aria-hidden="true">
+        <div class="scroll-window">
+          <div class="scroll-body" tabindex="0" aria-label="Contract (scrollable)">
+            <p class="scroll-title">Contract</p>
+            <p>
+              EDIT: The contract wording goes here.
+            </p>
+          </div>
+          <div class="scroll-shade" aria-hidden="true"></div>
+        </div>
+        <div class="roll">
+          <img src="images/scroll-bottom.png" alt="" aria-hidden="true">
+          <div class="roll-turn roll-turn-bottom" aria-hidden="true"></div>
+        </div>
       </div>
+      <p class="scroll-hint">Scroll the parchment to read &#8597;</p>
     </section>
 
     <!-- ============ DM SECRETS (encrypted; unlocked in the browser) ============ -->
@@ -364,6 +422,22 @@
       body.innerHTML = html;
       body.hidden = false;
     });
+
+    // Turn the rolls as the contract scrolls
+    (() => {
+      const body = document.querySelector(".scroll-body");
+      const scroll = document.querySelector(".scroll");
+      if (!body || !scroll) return;
+      let queued = false;
+      body.addEventListener("scroll", () => {
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(() => {
+          scroll.style.setProperty("--roll", -body.scrollTop + "px");
+          queued = false;
+        });
+      }, { passive: true });
+    })();
   </script>
 
 </body>
