@@ -286,7 +286,7 @@
   <script>
     // Encrypted content (AES-GCM, key from PBKDF2-SHA256). Only the right password can decrypt it.
     const DDB_LOCK = {"salt":"R1Sdr9sldtGk2UbkbJ5T6w==","iv":"qEnasmeK6TgMwvZJ","ct":"4AQGhvQK3bblaO2QiHzFxxpSQRL0elQV5rlYIMrEXJKnhM0R0vfZKjLD8nN/bPV7OHJnSXU0IRRXRzYuXvWltlRdDqILwgi8GuM=","it":600000};
-    const SECRETS_LOCK = {"salt":"u22TKnmaAxrnc/CE2W1ERw==","iv":"KHH2OrUYyUSTdH8z","ct":"wXbrYoWHS3tjJDVTocC1K7eFDFemQmzSHmNnOKNVr0UGAZeMEtOl57WfoRcuE7szfXIA8ri4W45H7Mga3tu5kvuAfuofm/Mc9o1baYFFztR4DkXQPHk+uzHuAawRQ9s9k/DnK+wgzDhfu0ALAQIiHPWcL3ZGNVpO","it":600000};
+    const SECRETS_LOCK = {"salt":"biQyhY8YiH3R2YmopcLp0A==","iv":"L5U+qHhE/PRieWAf","ct":"HzPM8LbqVD9JTr6ViidjU10ZjJx1i8AJLvQ5ANuAQMmpruqh5XOZvNAN8UBbIhEcNAafUeXExtsPwbsZ","it":600000};
     const b64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
     async function unlock(lock, pw) {
       const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveKey"]);
