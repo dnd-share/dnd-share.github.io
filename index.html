@@ -90,6 +90,29 @@
       color: var(--ink);
       margin: 2rem 0 .75rem;
     }
+    .scroll { max-width: 645px; margin: 1.5rem auto; }
+    .scroll img { display: block; width: 100%; height: auto; }
+    .scroll-body {
+      margin: -1px 0;
+      padding: .25rem 27% .75rem 22%;
+      background: url("images/scroll-mid.png") top center / 100% auto repeat-y;
+      color: #3a2616;
+      font-size: 1.1rem;
+      line-height: 1.55;
+    }
+    .scroll-body p:last-child { margin-bottom: 0; }
+    .scroll-title {
+      font-family: "Cinzel", serif;
+      font-weight: 700;
+      font-size: 1.4rem;
+      text-align: center;
+      letter-spacing: .08em;
+      color: var(--accent);
+    }
+    @media (max-width: 520px) {
+      .scroll-body { font-size: .9rem; line-height: 1.45; }
+      .scroll-title { font-size: 1.1rem; }
+    }
     figure { margin: 0 0 1.25rem; }
     figure img {
       display: block;
@@ -222,9 +245,17 @@
       </p>
 
       <h3>2. The Contract</h3>
-      <p>
-        EDIT: The contract that sets the campaign in motion.
-      </p>
+      <!-- The scroll grows with its text: top roll + repeating parchment + bottom roll -->
+      <div class="scroll">
+        <img src="images/scroll-top.png" alt="" aria-hidden="true">
+        <div class="scroll-body">
+          <p class="scroll-title">Contract</p>
+          <p>
+            EDIT: The contract wording goes here. The scroll stretches to fit however much text you add.
+          </p>
+        </div>
+        <img src="images/scroll-bottom.png" alt="" aria-hidden="true">
+      </div>
     </section>
 
     <!-- ============ DM SECRETS (encrypted; unlocked in the browser) ============ -->
