@@ -214,6 +214,21 @@
       </p>
     </section>
 
+    <!-- ============ DM SECRETS (encrypted; unlocked in the browser) ============ -->
+    <section id="secrets">
+      <h2>DM Secrets</h2>
+      <div class="locked" id="secrets-lock">
+        <strong>For the DM's eyes only</strong>
+        <form id="secrets-form" autocomplete="off">
+          <label for="secrets-pw" class="sr-only">Password</label>
+          <input id="secrets-pw" type="password" placeholder="Password" required>
+          <button type="submit">Unlock</button>
+        </form>
+        <p class="lock-msg" id="secrets-msg" aria-live="polite"></p>
+      </div>
+      <div id="secrets-body" hidden></div>
+    </section>
+
     <!-- ============ LINKS ============ -->
     <!-- EDIT: replace each href="#" with your real link. Copy/paste an <li> block to add more. -->
     <section id="links">
@@ -244,6 +259,12 @@
             <span>Recaps of past adventures</span>
           </a>
         </li>
+        <li>
+          <a href="#secrets">
+            <strong>🔒 DM Secrets</strong>
+            <span>Password required</span>
+          </a>
+        </li>
       </ul>
     </section>
 
@@ -263,32 +284,41 @@
   </footer>
 
   <script>
-    // Encrypted D&D Beyond link (AES-GCM, key from PBKDF2-SHA256).
-    const LOCK = {"salt":"Dzw+ep1Mv8jV3Kjwz3KXrw==","iv":"CuSDMEH2SzxnOi2Y","ct":"INds29u4x956BTmkIlTvVW0YBiYCjSw5MDfPtEW9ZQW+d0/DHvvpDSFLx/DWzMzDVkcjhVy/xaUOC3jXGaliAU2tXZy+ssvOKCQ=","it":600000};
+    // Encrypted content (AES-GCM, key from PBKDF2-SHA256). Only the right password can decrypt it.
+    const DDB_LOCK = {"salt":"Dzw+ep1Mv8jV3Kjwz3KXrw==","iv":"CuSDMEH2SzxnOi2Y","ct":"INds29u4x956BTmkIlTvVW0YBiYCjSw5MDfPtEW9ZQW+d0/DHvvpDSFLx/DWzMzDVkcjhVy/xaUOC3jXGaliAU2tXZy+ssvOKCQ=","it":600000};
+    const SECRETS_LOCK = {"salt":"u22TKnmaAxrnc/CE2W1ERw==","iv":"KHH2OrUYyUSTdH8z","ct":"wXbrYoWHS3tjJDVTocC1K7eFDFemQmzSHmNnOKNVr0UGAZeMEtOl57WfoRcuE7szfXIA8ri4W45H7Mga3tu5kvuAfuofm/Mc9o1baYFFztR4DkXQPHk+uzHuAawRQ9s9k/DnK+wgzDhfu0ALAQIiHPWcL3ZGNVpO","it":600000};
     const b64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
-    async function unlock(pw) {
+    async function unlock(lock, pw) {
       const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveKey"]);
       const key = await crypto.subtle.deriveKey(
-        { name: "PBKDF2", salt: b64(LOCK.salt), iterations: LOCK.it, hash: "SHA-256" },
+        { name: "PBKDF2", salt: b64(lock.salt), iterations: lock.it, hash: "SHA-256" },
         base, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
-      const out = await crypto.subtle.decrypt({ name: "AES-GCM", iv: b64(LOCK.iv) }, key, b64(LOCK.ct));
+      const out = await crypto.subtle.decrypt({ name: "AES-GCM", iv: b64(lock.iv) }, key, b64(lock.ct));
       return new TextDecoder().decode(out);
     }
-    document.getElementById("ddb-form").addEventListener("submit", async e => {
-      e.preventDefault();
-      const msg = document.getElementById("ddb-msg");
-      msg.textContent = "Checking…";
-      try {
-        const url = await unlock(document.getElementById("ddb-pw").value);
-        const card = document.getElementById("ddb-card");
-        const a = document.createElement("a");
-        a.href = url; a.target = "_blank"; a.rel = "noopener";
-        a.innerHTML = "<strong>D&amp;D Beyond Campaign</strong><span>Unlocked — click to join the campaign</span>";
-        card.replaceWith(a);
-        window.open(url, "_blank", "noopener");
-      } catch {
-        msg.textContent = "Wrong password.";
-      }
+    function wire(formId, inputId, msgId, lock, onOpen) {
+      document.getElementById(formId).addEventListener("submit", async e => {
+        e.preventDefault();
+        const msg = document.getElementById(msgId);
+        msg.textContent = "Checking…";
+        try { onOpen(await unlock(lock, document.getElementById(inputId).value)); }
+        catch { msg.textContent = "Wrong password."; }
+      });
+    }
+
+    wire("ddb-form", "ddb-pw", "ddb-msg", DDB_LOCK, url => {
+      const a = document.createElement("a");
+      a.href = url; a.target = "_blank"; a.rel = "noopener";
+      a.innerHTML = "<strong>D&amp;D Beyond Campaign</strong><span>Unlocked — click to join the campaign</span>";
+      document.getElementById("ddb-card").replaceWith(a);
+      window.open(url, "_blank", "noopener");
+    });
+
+    wire("secrets-form", "secrets-pw", "secrets-msg", SECRETS_LOCK, html => {
+      document.getElementById("secrets-lock").remove();
+      const body = document.getElementById("secrets-body");
+      body.innerHTML = html;
+      body.hidden = false;
     });
   </script>
 
