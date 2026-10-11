@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- EDIT: your campaign name -->
+  <title>A Contract Gone Wrong</title>
+  <meta name="description" content="Home of our Dungeons & Dragons campaign.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4ecd8;
+      --paper: #fbf6e9;
+      --ink: #2b2118;
+      --muted: #6b5a47;
+      --accent: #5e2620;
+      --border: #d8c7a3;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "EB Garamond", Georgia, serif;
+      font-size: 1.2rem;
+      line-height: 1.65;
+    }
+    header {
+      text-align: center;
+      padding: 4.5rem 1rem 3rem;
+      border-bottom: 1px solid var(--border);
+    }
+    header .eyebrow {
+      font-family: "Cinzel", serif;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      font-size: .8rem;
+      color: var(--accent);
+      margin: 0 0 .75rem;
+    }
+    h1, h2 {
+      font-family: "Cinzel", serif;
+      font-weight: 700;
+      line-height: 1.2;
+      margin: 0;
+    }
+    h1 { font-size: clamp(2.2rem, 7vw, 3.8rem); }
+    header .tagline {
+      font-style: italic;
+      color: var(--muted);
+      margin: 1rem auto 0;
+      max-width: 34rem;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+      font-family: "Cinzel", serif;
+      font-size: .9rem;
+    }
+    nav a { color: var(--ink); text-decoration: none; border-bottom: 1px solid transparent; }
+    nav a:hover { border-color: var(--accent); }
+    main {
+      max-width: 44rem;
+      margin: 0 auto;
+      padding: 0 1rem 4rem;
+    }
+    section { padding-top: 3.5rem; }
+    h2 {
+      font-size: 1.6rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    h2::after {
+      content: "";
+      display: block;
+      width: 3rem;
+      height: 2px;
+      background: var(--accent);
+      margin-top: .6rem;
+    }
+    p { margin: 0 0 1rem; }
+    .links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+      gap: 1rem;
+    }
+    .links a {
+      display: block;
+      height: 100%;
+      padding: 1.1rem 1.25rem;
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--ink);
+      text-decoration: none;
+      transition: border-color .15s, transform .15s;
+    }
+    .links a:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .links strong {
+      display: block;
+      font-family: "Cinzel", serif;
+      font-size: 1rem;
+      color: var(--accent);
+    }
+    .links span { font-size: 1rem; color: var(--muted); }
+    .locked {
+      height: 100%;
+      padding: 1.1rem 1.25rem;
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+    .locked strong::before { content: "🔒 "; }
+    .locked form { display: flex; gap: .5rem; margin-top: .75rem; }
+    .locked input {
+      flex: 1;
+      min-width: 0;
+      font: inherit;
+      font-size: 1rem;
+      padding: .4rem .6rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: #fff;
+      color: var(--ink);
+    }
+    .locked button {
+      font-family: "Cinzel", serif;
+      font-size: .85rem;
+      padding: .4rem .8rem;
+      border: 0;
+      border-radius: 4px;
+      background: var(--accent);
+      color: #fbf6e9;
+      cursor: pointer;
+    }
+    .lock-msg { font-size: .95rem; color: var(--accent); margin: .5rem 0 0; min-height: 1em; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    footer {
+      text-align: center;
+      font-size: .95rem;
+      color: var(--muted);
+      padding: 2rem 1rem 3rem;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <p class="eyebrow">A Dungeons &amp; Dragons Campaign</p>
+    <!-- EDIT: campaign name and one-line tagline -->
+    <h1>A Contract Gone Wrong</h1>
+    <p class="tagline">A band of witchers, finally showing that Geralt of Rivia isn't the only monster slayer.</p>
+    <nav>
+      <a href="#intro">Welcome</a>
+      <a href="#background">Background</a>
+      <a href="#links">Links</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ============ INTRO ============ -->
+    <section id="intro">
+      <h2>Welcome, Adventurers</h2>
+      <p>
+        EDIT: A short intro. Who's the DM, when you play (e.g. every other Friday at 7pm),
+        what system/edition you use, and the vibe of the game — gritty, heroic, comedic, horror.
+      </p>
+    </section>
+
+    <!-- ============ PLOT BACKGROUND ============ -->
+    <section id="background">
+      <h2>The Story Before</h2>
+      <p>
+        EDIT: Set the scene. What happened in the world before the players arrived?
+        A fallen empire, a war just ended, a strange omen in the sky?
+      </p>
+      <p>
+        EDIT: Where does the campaign begin, and what's pulling the characters together?
+        Keep secrets out — this page is player-facing.
+      </p>
+    </section>
+
+    <!-- ============ LINKS ============ -->
+    <!-- EDIT: replace each href="#" with your real link. Copy/paste an <li> block to add more. -->
+    <section id="links">
+      <h2>Links</h2>
+      <ul class="links">
+        <li>
+          <!-- Password-locked: the link is encrypted and only decrypted in the browser with the right password. -->
+          <div class="locked" id="ddb-card">
+            <strong>D&amp;D Beyond Campaign</strong>
+            <span>Join the campaign &amp; share character sheets</span>
+            <form id="ddb-form" autocomplete="off">
+              <label for="ddb-pw" class="sr-only">Password</label>
+              <input id="ddb-pw" type="password" placeholder="Password" required>
+              <button type="submit">Unlock</button>
+            </form>
+            <p class="lock-msg" id="ddb-msg" aria-live="polite"></p>
+          </div>
+        </li>
+        <li>
+          <a href="#" target="_blank" rel="noopener">
+            <strong>World Map</strong>
+            <span>Where we've been and where we're headed</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" target="_blank" rel="noopener">
+            <strong>Session Notes</strong>
+            <span>Recaps of past adventures</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer>
+    May your rolls be ever natural twenties.
+  </footer>
+
+  <script>
+    // Encrypted D&D Beyond link (AES-GCM, key from PBKDF2-SHA256).
+    const LOCK = {"salt":"Dzw+ep1Mv8jV3Kjwz3KXrw==","iv":"CuSDMEH2SzxnOi2Y","ct":"INds29u4x956BTmkIlTvVW0YBiYCjSw5MDfPtEW9ZQW+d0/DHvvpDSFLx/DWzMzDVkcjhVy/xaUOC3jXGaliAU2tXZy+ssvOKCQ=","it":600000};
+    const b64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+    async function unlock(pw) {
+      const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveKey"]);
+      const key = await crypto.subtle.deriveKey(
+        { name: "PBKDF2", salt: b64(LOCK.salt), iterations: LOCK.it, hash: "SHA-256" },
+        base, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+      const out = await crypto.subtle.decrypt({ name: "AES-GCM", iv: b64(LOCK.iv) }, key, b64(LOCK.ct));
+      return new TextDecoder().decode(out);
+    }
+    document.getElementById("ddb-form").addEventListener("submit", async e => {
+      e.preventDefault();
+      const msg = document.getElementById("ddb-msg");
+      msg.textContent = "Checking…";
+      try {
+        const url = await unlock(document.getElementById("ddb-pw").value);
+        const card = document.getElementById("ddb-card");
+        const a = document.createElement("a");
+        a.href = url; a.target = "_blank"; a.rel = "noopener";
+        a.innerHTML = "<strong>D&amp;D Beyond Campaign</strong><span>Unlocked — click to join the campaign</span>";
+        card.replaceWith(a);
+        window.open(url, "_blank", "noopener");
+      } catch {
+        msg.textContent = "Wrong password.";
+      }
+    });
+  </script>
+
+</body>
+</html>
